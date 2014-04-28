@@ -38,8 +38,14 @@
 		//be the second argument after the event name
 		trigger: function(){
 			var args = Array.prototype.slice.call(arguments, 0);
-	
-			args.splice(1,0,this);
+			
+			//Only add the triggering object if it is not already there
+			//It will already be there on many "native" Backbone events
+			//such as model change events
+			if(arguments[1] !== this){
+				args.splice(1, 0, this);	
+			}
+			
 			_trigger.apply(eventsCache, args);
 			_trigger.apply(this, arguments);
 			return this;
